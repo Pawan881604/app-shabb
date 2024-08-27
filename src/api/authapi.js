@@ -19,7 +19,7 @@ import axios from "axios";
 const baseusel = getSiteURL();
 
 import axiosInstance from "../lib/AxiosInstance";
-import { setToken } from "../lib/AsyncStorage/asyncStorage";
+import { saveToken, setToken } from "../lib/AsyncStorage/asyncStorage";
 
 export const user_auth = (phone_number, uuid) => async (dispatch) => {
   try {
@@ -76,7 +76,7 @@ export const Otp_auth = (otp, user_id, uuid) => async (dispatch) => {
     const token = data.token;
    
     if (token) {
-      setToken(token)
+      saveToken('token',token)
     }
     dispatch({ type: FETCH_USER_OTP_DETAILS_SUCCESS, payload: data });
   } catch (error) {

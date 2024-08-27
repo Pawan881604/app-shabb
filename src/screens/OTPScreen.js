@@ -23,7 +23,7 @@ const OTPScreen = () => {
 
   useEffect(() => {
     if (success) {
-      navigation.navigate('index');
+      navigation.navigate('Websites');
       dispatch({ type: FETCH_USER_OTP_DETAILS_RESET });
     }
   }, [success, dispatch, navigation]);

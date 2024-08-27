@@ -33,7 +33,7 @@ import { user_auth } from "../api/authapi";
     };
     useEffect(() => {
       if (success) {
-        navigation.navigate("OTPScreen");
+        navigation.navigate("Otp");
       }
     }, [success, dispatch, navigation]);
   
