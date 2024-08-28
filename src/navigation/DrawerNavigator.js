@@ -3,6 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import TabNavigator from "./TabNavigator";
 import CustomDrawerContent from "./CustomDrawerContent";
 import CustomHeaderButton from "./CustomHeaderButton";
+import SearchBar from "../components/common/search/SearchBar";
 
 const Drawer = createDrawerNavigator();
 
@@ -12,10 +13,10 @@ const DrawerNavigator = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={({ navigation }) => ({
         headerLeft: () => <CustomHeaderButton />,
-        headerTitle: "",
+        headerTitle: () => <SearchBar />,
 
         headerStyle: {
-          backgroundColor: "transparent",
+          backgroundColor: "#2ac5ff",
         },
         headerTransparent: true,
       })}

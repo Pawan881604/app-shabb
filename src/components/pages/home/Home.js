@@ -1,53 +1,34 @@
-import React from "react";
-import { Image, Text, View } from "react-native";
-import CustomButton from "../../common/buttons/CustomButton";
-import { getToken, removeToken } from "../../../lib/AsyncStorage/asyncStorage";
-
+import React, { useState, useCallback } from "react";
+import { ScrollView, View, RefreshControl } from "react-native";
+import Card from "../../common/site-card/Card";
 const Home = () => {
-  const handleSubmit = async () => {
-    const key = await getToken("token");
-    console.log(key);
-  };
-  const handleSubmitr = async () => {
-    const key = await removeToken("token");
-    console.log(key);
-  };
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    // Simulate an API call
+    setTimeout(() => {
+      // After fetching data from your API, stop the refreshing indicator
+      setRefreshing(false);
+    }, 2000); // You can adjust this to the actual time your API takes to fetch data
+  }, []);
+
   return (
-    <View className="pt-10 px-2">
-      <View className="flex bg-black flex-row items-center">
-        <View className="w-3/4">
-          <View>
-            <Text>demo demo demo</Text>
-            <Text>total ratings</Text>
-          </View>
-          <View>
-            <Text>discription</Text>
-            <Text>...more</Text>
-          </View>
-        </View>
-        <View className="w-3/12">
-          <View className="max-w-2">
-            <Image
-              source={require("../../../../assets/logo.png")}
-              style={{ width: 100, height: 130 }}
-              resizeMode="contain"
-            />
-          </View>
-        </View>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      className="mt-24 px-5 bg-white"
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+      <View className="mt-0">
+        {Array(5)
+          .fill(null)
+          .map((item, i) => (
+            <Card key={i} />
+          ))}
       </View>
-      <CustomButton
-        title="Enter OTP"
-        loading={false}
-        color={"bg-black py-2 rounded-lg mt-5"}
-        onPress={handleSubmit}
-      />
-      <CustomButton
-        title="Enter OTP"
-        loading={false}
-        color={"bg-black py-2 rounded-lg mt-5"}
-        onPress={handleSubmitr}
-      />
-    </View>
+    </ScrollView>
   );
 };
 export default Home;

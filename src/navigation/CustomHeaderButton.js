@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import Ionicons from "react-native-vector-icons/Ionicons";
 const CustomHeaderButton = () => {
   const navigation = useNavigation();
 
@@ -10,7 +10,12 @@ const CustomHeaderButton = () => {
       onPress={() => navigation.toggleDrawer()}
       style={styles.button}
     >
-      <Text style={styles.buttonText}>menu</Text>
+      <Ionicons
+        name="settings"
+        size={32}
+        color="#2ac5ff"
+        className="bg-white rounded-full"
+      />
     </TouchableOpacity>
   );
 };
