@@ -2,9 +2,10 @@
 import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-// import { useDispatch } from "react-redux";
+import { FETCH_USER_ERROR } from "../../../store/redux/constants/user_actionTypes";
+import { useDispatch } from "react-redux";
 export const Alert_ = ({ type, msg }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const showAlert = () => {
     Alert.alert(
       "Alert Title", // Title of the alert
@@ -25,7 +26,7 @@ export const Alert_ = ({ type, msg }) => {
   };
 
   const handlePress = () => {
-    // dispatch({ type: FETCH_USER_ERROR });
+    dispatch({ type: FETCH_USER_ERROR });
   };
   return (
     <View className="relative">

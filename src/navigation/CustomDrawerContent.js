@@ -7,13 +7,17 @@ import {
 
 const CustomDrawerContent = (props) => {
   const currentRoute = props.state.routeNames[props.state.index];
+  console.log(props.state)
   return (
     <DrawerContentScrollView {...props}>
       <View style={styles.container}>
-        {currentRoute !== "Tabs" && <DrawerItemList {...props} />}
+        {/* {currentRoute !== "Tabs" && <DrawerItemList {...props} />} */}
 
-        <TouchableOpacity onPress={() => props.navigation.navigate("Websites")}>
-          <Text style={styles.item}>Go to Home</Text>
+        {/* <TouchableOpacity onPress={() => props.navigation.navigate("Websites")}>
+          <Text style={styles.item}>Home</Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity onPress={() => props.navigation.navigate("Demo")}>
+          <Text style={styles.item}>Demo</Text>
         </TouchableOpacity>
       </View>
     </DrawerContentScrollView>
