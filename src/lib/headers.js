@@ -1,8 +1,7 @@
 import { getToken } from "./AsyncStorage/asyncStorage";
 
-const token = getToken;
 const get_method = async () => {
- 
+  const token = await getToken('token');
   return {
     withCredentials: true,
     headers: {
@@ -13,7 +12,7 @@ const get_method = async () => {
 };
 
 const others_method = async () => {
- 
+  const token = await getToken('token');
   return {
     withCredentials: true,
     headers: {
@@ -25,7 +24,7 @@ const others_method = async () => {
 };
 
 const others_multiform_method = async () => {
- 
+  const token = await getToken('token');
   return {
     withCredentials: true,
     headers: {

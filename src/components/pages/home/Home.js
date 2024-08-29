@@ -8,7 +8,7 @@ import Loader from "../../common/loader/Loader";
 import { useTheme } from "../../../lib/Theme/ThemeContext";
 const Home = () => {
   const dispatch = useDispatch();
-  const { darkMode } = useTheme();
+
   const { loading, web, error } = useSelector((state) => state.web);
   const { refreshing, onRefresh } = useRefresh(2000, get_all_website, dispatch);
   useEffect(() => {
@@ -22,7 +22,7 @@ const Home = () => {
     <ScrollView
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
-      className={darkMode ? "bg-black" : "mt-24 pr-2 bg-white"}
+      className={"mt-24 pr-2 bg-white"}
       contentContainerStyle={{ flexGrow: 1 }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

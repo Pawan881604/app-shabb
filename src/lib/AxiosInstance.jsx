@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { getToken } from './AsyncStorage/asyncStorage';
-const token = getToken();
 // Create an Axios instance
 const axiosInstance = axios.create();
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
   async (config) => {
+    const token = await getToken('token');
     try {
       // Retrieve the token asynchronously
     
