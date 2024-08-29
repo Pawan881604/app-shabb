@@ -1,4 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
+import * as Updates from "expo-updates";
 
 // Validate the key
 function isValidKey(key) {
@@ -28,6 +29,7 @@ async function getToken(key) {
   }
   try {
     const token = await SecureStore.getItemAsync(key);
+    
     return token;
   } catch (error) {
     console.error('Error retrieving the token:', error);
@@ -43,6 +45,7 @@ async function removeToken(key) {
   }
   try {
     await SecureStore.deleteItemAsync(key);
+await Updates.reloadAsync();
     console.log('Token removed securely');
   } catch (error) {
     console.error('Error removing the token:', error);

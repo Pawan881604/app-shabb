@@ -37,7 +37,7 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer>
-      {!token ? <DrawerNavigator /> : <AuthNavigator />}
+      {token ? <DrawerNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };

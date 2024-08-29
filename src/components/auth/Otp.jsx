@@ -9,7 +9,6 @@ import CustomButton from "../../components/common/buttons/CustomButton";
 import { generateRandomString } from "../../lib/generateRandomString";
 import { FETCH_USER_OTP_DETAILS_RESET } from "../../store/redux/constants/user_actionTypes";
 import * as Updates from "expo-updates";
-
 const Otp = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();

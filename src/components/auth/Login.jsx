@@ -16,7 +16,7 @@ const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const phoneInput = React.useRef(null);
   const dispatch = useDispatch();
-  const { refreshing, onRefresh } = useRefresh(2000);
+  const { refreshing, onRefresh } = useRefresh(2000,null,null);
   const { loading, success, error } = useSelector((state) => state.user);
   // const { login, logout } = useContext(AuthContext);
   const handleSubmit = () => {
