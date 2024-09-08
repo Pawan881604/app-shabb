@@ -14,12 +14,16 @@ import {
   ADD_WEB_DETAILS_REQUEST,
   ADD_WEB_DETAILS_RESET,
   ADD_WEB_DETAILS_SUCCESS,
+  FETCH_APPEND_DATA,
+  FETCH_WEB_REFRESH,
 } from "../constants/web_actionTypes";
 
-export const web_reducer = (
-  state = { web: [] },
-  action
-) => {
+const initialState = {
+  loading: false,
+  web: [],
+  error: null,
+};
+export const web_reducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_WEB_REQUEST:
       return {
@@ -30,7 +34,15 @@ export const web_reducer = (
       return {
         ...state,
         loading: false,
-        web: action.payload.web_data,
+        web: [...state.web, ...action.payload.web_data],
+        count_web: action.payload.count_website,
+        resultPerpage: action.payload.resultPerpage,
+      };
+      case FETCH_WEB_REFRESH: // Handle refreshing
+      return {
+        ...state,
+        loading: false,
+        web: action.payload.web_data, // Replace data for refresh
         count_web: action.payload.count_website,
         resultPerpage: action.payload.resultPerpage,
       };

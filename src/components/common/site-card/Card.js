@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Image, Text, TouchableOpacity, View, Linking } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { getSiteURL } from "../../../lib/get-site-url";
@@ -10,6 +10,7 @@ const Card = ({ item }) => {
   const handlePress = (website) => {
     Linking.openURL(website);
   };
+
   return (
     <TouchableOpacity onPress={() => handlePress(item.link)}>
       <View
@@ -66,10 +67,10 @@ const Card = ({ item }) => {
                 <Image
                   source={
                     item.image
-                      ? {uri:`${baseusel}/${item.image}`}
+                      ? { uri: `${baseusel}/${item.image.path}` }
                       : require("../../../../assets/images/logo.png")
                   }
-                  style={{width: 100, height: 100}}
+                  style={{ width: 100, height: 100 }}
                   className="w-28"
                   resizeMode="contain"
                 />
@@ -82,4 +83,8 @@ const Card = ({ item }) => {
   );
 };
 
-export default Card;
+const isMemoize = (prev, next) => {
+  if (prev.item._id !== next.item._id) return true;
+};
+
+export default memo(Card, isMemoize);
