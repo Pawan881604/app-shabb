@@ -6,16 +6,19 @@ import {
   FETCH_WEB_REFRESH,
   FETCH_WEB_REQUEST,
   FETCH_WEB_SUCCESS,
+  RESET_WEB,
 } from "../store/redux/constants/web_actionTypes";
 const baseusel = getSiteURL();
 export const get_all_website =
   (page = 1, isRefresh) =>
   async (dispatch) => {
-    console.log(isRefresh)
     try {
+      if (isRefresh) {
+        dispatch({ type: RESET_WEB }); // Reset state before fetching new data
+      }
       dispatch({ type: FETCH_WEB_REQUEST });
       const { data } = await axiosInstance.get(
-        `${baseusel}/api/v1/websites?page=${page}`,
+        `${baseusel}/api/v1/app-websites?status=Active&page=${page}`,
         get_method()
       );
 

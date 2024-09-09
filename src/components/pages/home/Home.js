@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, View, ActivityIndicator } from "react-native";
 import Card from "../../common/site-card/Card";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -11,48 +11,47 @@ import usePagination from "../../../hooks/usePagination";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { web } = useSelector((state) => state.web);
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
-  // Pagination state
-
-  const { page, loadMoreData, loadingMore, setPage, setHasMore } =
-    usePagination(get_all_website);
-  const { onRefresh, refreshing } = useRefresh(
-    setPage,
-    setHasMore,
-    get_all_website
-  );
-
-  const Footer = useFooter(loadingMore);
-
+  const { web, loading, resultPerpage } = useSelector((state) => state.web);
+  const [page, setPage] = useState(1);
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
-    if (isFirstLoad) {
-      dispatch(get_all_website(page)).finally(() => setIsFirstLoad(false)); // Set isFirstLoad to false after data is loaded
-    }
-  }, [dispatch, page, isFirstLoad]);
+    dispatch(get_all_website(page));
+  }, [dispatch, page]);
 
-  const renderItem = ({ item }) => {
-    return <Card item={item} />;
+  const renderItem = ({ item }) => <Card item={item} />;
+  const loadMore = () => {
+    if (!loading && web.length % resultPerpage === 0) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
 
-  if (isFirstLoad) {
-    return <Loader />; // Show loader only on initial load
+  const refreshList = () => {
+    setRefreshing(true); // Start the refreshing state
+    setPage(1); // Reset page to 1
+    dispatch(get_all_website(1, true)) // Fetch the first page with refresh flag
+      .finally(() => setRefreshing(false)); // Stop the refreshing state after fetch
+  };
+  const renderFooter = () => {
+    if (!loading) return null;
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  };
+
+  if (loading && page === 1) {
+    return <Loader />;
   }
   return (
-    <FlatList
-      data={web}
-      className="my-20"
-      renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
-      ListFooterComponent={Footer}
-      onEndReached={loadMoreData}
-      onEndReachedThreshold={0.9}
-      refreshing={refreshing}
-      onRefresh={onRefresh}
-      contentContainerStyle={{ paddingBottom: 20 }}
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
-    />
+    <View style={{ flex: 1 }} className="my-20">
+      <FlatList
+        data={web}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderItem}
+        onEndReached={loadMore} // Delegate to usePagination
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter} // Use the hook's Footer component
+        refreshing={refreshing} // Corrected: boolean value
+        onRefresh={refreshList} // Corrected: the function to refresh
+      />
+    </View>
   );
 };
 
