@@ -8,10 +8,12 @@ module.exports = {
         50: "#2ac5ff",
         "white-4": "#ffffffe6",
         "w-color": "#25D366",
+        pink:"#ff905a", //offer-color
       },
       colors: {
         white: "#FFFFFF",
         black: "#000000",
+        pink:"#ff905a", //offer-color
         background: {
           50: "linear-gradient(to right #2ac5ff, #fff)",
         },

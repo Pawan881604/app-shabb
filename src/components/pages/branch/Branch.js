@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  FlatList,
   RefreshControl,
   ScrollView,
   Text,
@@ -14,54 +15,65 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Linking } from "react-native";
 const Branch = () => {
   const dispatch = useDispatch();
-  const { loading, branch, error } = useSelector((state) => state.branch);
-  const { refreshing, onRefresh } = useRefresh(
-    2000,
-    get_branch_details,
-    dispatch
+  const { loading, branch, error, resultPerpage } = useSelector(
+    (state) => state.branch
   );
+  const [page, setPage] = useState(1);
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
-    dispatch(get_branch_details());
-  }, [dispatch]);
-
-  if (loading) {
-    return <Loader />;
-  }
+    dispatch(get_branch_details(page));
+  }, [dispatch, page]);
 
   const handlePress = (link) => {
     Linking.openURL(link);
   };
-  return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
-      className={"mt-24 pr-2 "}
-      contentContainerStyle={{ flexGrow: 1 }}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      <View className="p-3 mb-16">
-        <View>
-          <Text className="text-2xl text-center font-medium">My Branch</Text>
-        </View>
-        <View className="mt-10 bg-white p-5 rounded-xl shadow-lg">
-          <View className="flex-row gap-4 flex-wrap">
-            {Array.isArray(branch) &&
-              branch.map((item, i) => (
-                <TouchableOpacity
-                  key={i}
-                  onPress={() => handlePress(item.link)}
-                >
-                  <View className="bg-50 px-4 py-3 rounded-full shadow-2xl">
-                    <FontAwesome name="whatsapp" size={42} color="#fff" />
-                  </View>
-                </TouchableOpacity>
-              ))}
-          </View>
-        </View>
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={() => handlePress(item.link)}>
+      <View className="bg-50 px-4 py-3 rounded-full shadow-2xl">
+        <FontAwesome name="whatsapp" size={42} color="#fff" />
       </View>
-    </ScrollView>
+    </TouchableOpacity>
+  );
+  const loadMore = () => {
+    if (!loading && web.length % resultPerpage === 0) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const refreshList = () => {
+    setRefreshing(true); // Start the refreshing state
+    setPage(1); // Reset page to 1
+    dispatch(get_branch_details(1, true)) // Fetch the first page with refresh flag
+      .finally(() => setRefreshing(false)); // Stop the refreshing state after fetch
+  };
+
+  if (loading && page === 1) {
+    return <Loader />;
+  }
+  const renderFooter = () => {
+    if (!loading) return null;
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  };
+
+  return (
+    <View className="p-3 my-20">
+      <View >
+        <Text className="text-2xl text-center font-medium">My Branch</Text>
+      </View>
+      <View className="mt-10 bg-white p-5 rounded-xl shadow-lg">
+        <FlatList
+          data={branch}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+          onEndReached={loadMore} // Delegate to usePagination
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={renderFooter} // Use the hook's Footer component
+          refreshing={refreshing} // Corrected: boolean value
+          onRefresh={refreshList} // Corrected: the function to refresh
+        />
+      </View>
+    </View>
   );
 };
 

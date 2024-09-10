@@ -8,11 +8,11 @@ import {
   FETCH_BRANCH_ERROR,
 } from "../store/redux/constants/branch_actionTypes";
 const baseusel = getSiteURL();
-export const get_branch_details = () => async (dispatch) => {
+export const get_branch_details = (page) => async (dispatch) => {
   try {
     dispatch({ type: FETCH_BRANCH_DETAILS_REQUEST });
     const { data } = await axiosInstance.get(
-      `${baseusel}/api/v1/branchs`,
+      `${baseusel}/api/v1/branchs?status=Active&page=${page}`,
       get_method()
     );
 
